@@ -1,4 +1,4 @@
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageOps, ImageEnhance, ImageDraw
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
@@ -60,3 +60,41 @@ class ImageProcessor:
         self.img_label = tk.Label(root.content_frame, image=self.img_tk)
         self.img_label.image = self.img_tk
         self.img_label.pack(pady=20)
+
+    def show_negative(self, root):
+        if not self.original_img:
+            messagebox.showwarning("Warning", "Откройте изображение перед просмотром негативного изображения.")
+            return
+
+        img = ImageOps.invert(self.original_img.convert('RGB'))
+
+        if self.img_label:
+            self.img_label.destroy()
+
+        img.thumbnail((600, 400))
+        self.img_tk = ImageTk.PhotoImage(img)
+
+        self.img_label = tk.Label(root.content_frame, image=self.img_tk)
+        self.img_label.image = self.img_tk
+        self.img_label.pack(pady=20)
+
+    def increase_brightness(self, value, root):
+        if not self.original_img:
+            messagebox.showwarning("Warning", "Откройте изображение перед увеличением яркости.")
+            return
+
+        try:
+            enhancer = ImageEnhance.Brightness(self.original_img)
+            img = enhancer.enhance(value)
+
+            if self.img_label:
+                self.img_label.destroy()
+
+            img.thumbnail((600, 400))
+            self.img_tk = ImageTk.PhotoImage(img)
+
+            self.img_label = tk.Label(root.content_frame, image=self.img_tk)
+            self.img_label.image = self.img_tk
+            self.img_label.pack(pady=20)
+        except Exception as e:
+            messagebox.showerror("Error", f"Не удалось увеличить яркость: {e}")

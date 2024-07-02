@@ -9,7 +9,7 @@ class ImageProcessingUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Image Processing Application")
-        self.root.geometry("800x600")
+        self.root.geometry("1500x800")
         self.root.resizable(False, False)
 
         self.processor = ImageProcessor()
@@ -26,7 +26,8 @@ class ImageProcessingUI:
         tk.Frame(self.root, height=2, bd=1, relief=tk.SUNKEN).pack(fill=tk.X, padx=5, pady=5)
 
         # Кнопка для открытия изображения
-        self.open_img_btn = tk.Button(self.button_frame, text="Открыть фото", command=lambda: self.processor.open_image(self))
+        self.open_img_btn = tk.Button(self.button_frame, text="Открыть фото",
+                                      command=lambda: self.processor.open_image(self))
         self.open_img_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Кнопка для открытия камеры
@@ -38,14 +39,30 @@ class ImageProcessingUI:
         self.snapshot_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Кнопки для отображения цветовых каналов
-        self.red_channel_btn = tk.Button(self.button_frame, text="Показать Красный канал", command=lambda: self.processor.show_color_channel('Красный', self))
+        self.red_channel_btn = tk.Button(self.button_frame, text="Показать Красный канал",
+                                         command=lambda: self.processor.show_color_channel('Красный', self))
         self.red_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.green_channel_btn = tk.Button(self.button_frame, text="Показать Зелёный канал", command=lambda: self.processor.show_color_channel('Зелёный', self))
+        self.green_channel_btn = tk.Button(self.button_frame, text="Показать Зелёный канал",
+                                           command=lambda: self.processor.show_color_channel('Зелёный', self))
         self.green_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.blue_channel_btn = tk.Button(self.button_frame, text="Показать Синий канал", command=lambda: self.processor.show_color_channel('Синий', self))
+        self.blue_channel_btn = tk.Button(self.button_frame, text="Показать Синий канал",
+                                          command=lambda: self.processor.show_color_channel('Синий', self))
         self.blue_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
+
+        self.negative_btn = tk.Button(self.button_frame, text="Показать Негатив", command=self.show_negative)
+        self.negative_btn.pack(side=tk.LEFT, padx=10, pady=10)
+
+        self.brightness_label = tk.Label(self.button_frame, text="Яркость:")
+        self.brightness_label.pack(side=tk.LEFT, padx=10, pady=10)
+
+        self.brightness_scale = tk.Scale(self.button_frame, from_=0.1, to=3.0, resolution=0.1, orient=tk.HORIZONTAL)
+        self.brightness_scale.set(1.0)
+        self.brightness_scale.pack(side=tk.LEFT, padx=10, pady=10)
+
+        self.brightness_btn = tk.Button(self.button_frame, text="Повысить яркость", command=self.increase_brightness)
+        self.brightness_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Фрейм для отображения контента (изображений)
         self.content_frame = tk.Frame(self.root)
@@ -115,3 +132,9 @@ class ImageProcessingUI:
         else:
             messagebox.showwarning("Warning", "Сначала откройте камеру.")
 
+    def show_negative(self):
+        self.processor.show_negative(self)
+
+    def increase_brightness(self):
+        value = self.brightness_scale.get()
+        self.processor.increase_brightness(value, self)
