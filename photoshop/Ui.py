@@ -6,13 +6,17 @@ from Image import ImageProcessor
 
 
 class ImageProcessingUI:
-    def __init__(self, root1):
-        self.root = root1
+    def __init__(self, root):
+        self.root = root
         self.root.title("Image Processing Application")
         self.root.geometry("800x600")
         self.root.resizable(False, False)
 
         self.processor = ImageProcessor()
+
+        self.camera = None
+        self.frame = None
+        self.img_tk = None
 
         # Фрейм для кнопок и контента
         self.button_frame = tk.Frame(self.root)
@@ -22,10 +26,8 @@ class ImageProcessingUI:
         tk.Frame(self.root, height=2, bd=1, relief=tk.SUNKEN).pack(fill=tk.X, padx=5, pady=5)
 
         # Кнопка для открытия изображения
-        self.open_img_btn = tk.Button(self.button_frame, text="Открыть фото", command=self.open_image)
-        self.open_img_btn.pack(side=tk.LEFT,
-                               padx=10,
-                               pady=10)
+        self.open_img_btn = tk.Button(self.button_frame, text="Открыть фото", command=lambda: self.processor.open_image(self))
+        self.open_img_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Кнопка для открытия камеры
         self.open_camera_btn = tk.Button(self.button_frame, text="Открыть камеру", command=self.open_camera)
@@ -36,43 +38,34 @@ class ImageProcessingUI:
         self.snapshot_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Кнопки для отображения цветовых каналов
-        self.red_channel_btn = tk.Button(self.button_frame,
-                                         text="Показать Красный канал",
-                                         command=self.show_red_channel)
+        self.red_channel_btn = tk.Button(self.button_frame, text="Показать Красный канал", command=lambda: self.processor.show_color_channel('Красный', self))
+        self.red_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.red_channel_btn.pack(side=tk.LEFT,
-                                  padx=10,
-                                  pady=10)
+        self.green_channel_btn = tk.Button(self.button_frame, text="Показать Зелёный канал", command=lambda: self.processor.show_color_channel('Зелёный', self))
+        self.green_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.green_channel_btn = tk.Button(self.button_frame,
-                                           text="Показать Зелёный канал",
-                                           command=self.show_green_channel)
-
-        self.green_channel_btn.pack(side=tk.LEFT,
-                                    padx=10,
-                                    pady=10)
-
-        self.blue_channel_btn = tk.Button(self.button_frame,
-                                          text="Показать Синий канал",
-                                          command=self.show_blue_channel)
-
-        self.blue_channel_btn.pack(side=tk.LEFT,
-                                   padx=10,
-                                   pady=10)
+        self.blue_channel_btn = tk.Button(self.button_frame, text="Показать Синий канал", command=lambda: self.processor.show_color_channel('Синий', self))
+        self.blue_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Фрейм для отображения контента (изображений)
         self.content_frame = tk.Frame(self.root)
         self.content_frame.pack(expand=True, fill=tk.BOTH)
 
-        self.camera = None
-        self.frame = None
-        self.img_tk = None
-
-        # Инициализация snapshot_label с пустым изображением
+        # Label для отображения снимка с камеры
         self.snapshot_label = tk.Label(self.content_frame)
         self.snapshot_label.pack(pady=20)
 
     def open_camera(self):
+        self.close_camera()
+
+        if self.snapshot_label:
+            self.snapshot_label.destroy()
+            self.snapshot_label = None
+
+        if self.processor.img_label:
+            self.processor.img_label.destroy()
+            self.processor.img_label = None
+
         self.camera = cv2.VideoCapture(0)  # Открываем камеру с индексом 0 (обычно встроенная)
 
         if not self.camera.isOpened():
@@ -82,29 +75,21 @@ class ImageProcessingUI:
         self.show_camera_feed()
 
     def show_camera_feed(self):
-        _, frame = self.camera.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        self.frame = Image.fromarray(frame)
+        if self.camera:
+            _, frame = self.camera.read()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            self.frame = Image.fromarray(frame)
+            self.img_tk = ImageTk.PhotoImage(image=self.frame)
 
-        self.update_snapshot_label()
+            if not self.snapshot_label:
+                self.snapshot_label = tk.Label(self.content_frame)
+                self.snapshot_label.pack(pady=20)
 
-    def update_snapshot_label(self):
-        _, frame = self.camera.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        self.frame = Image.fromarray(frame)
+            self.snapshot_label.configure(image=self.img_tk)
+            self.snapshot_label.image = self.img_tk
 
-        img_tk = ImageTk.PhotoImage(image=self.frame)
-
-        if not self.snapshot_label:
-            self.snapshot_label = tk.Label(self.content_frame)
-            self.snapshot_label.pack(pady=20)
-
-        self.snapshot_label.configure(image=img_tk)
-        self.snapshot_label.image = img_tk
-
-
-        # Вызываем update_snapshot_label() снова через 10 миллисекунд
-        self.root.after(10, self.update_snapshot_label)
+            # Вызываем update_snapshot_label() снова через 10 миллисекунд
+            self.root.after(10, self.show_camera_feed)
 
     def close_camera(self):
         if self.camera:
@@ -119,43 +104,14 @@ class ImageProcessingUI:
                 self.close_camera()  # Закрываем камеру после сохранения снимка
                 messagebox.showinfo("Info", f"Снимок сохранен как {file_path}")
 
-                # Загружаем сохраненное изображение в ImageProcessor
+                if self.snapshot_label:
+                    self.snapshot_label.destroy()
+
                 self.processor.original_img = Image.open(file_path)
-                # Отображаем сохраненное изображение в интерфейсе
-                self.show_snapshot(file_path)
+                self.processor.show_image(self)
 
             except Exception as e:
                 messagebox.showerror("Error", f"Не удалось сохранить снимок: {e}")
         else:
             messagebox.showwarning("Warning", "Сначала откройте камеру.")
 
-    def open_image(self):
-        self.processor.open_image()
-        self.processor.show_image(self)
-
-    def show_red_channel(self):
-        self.processor.show_red_channel(self)
-
-    def show_green_channel(self):
-        self.processor.show_green_channel(self)
-
-    def show_blue_channel(self):
-        self.processor.show_blue_channel(self)
-
-    def show_snapshot(self, file_path):
-        img = Image.open(file_path)
-        img.thumbnail((600, 400))
-        img_tk = ImageTk.PhotoImage(image=img)
-
-        if self.snapshot_label:
-            self.snapshot_label.destroy()
-
-        self.processor.img_label = tk.Label(self.content_frame, image=img_tk)
-        self.processor.img_label.image = img_tk
-        self.processor.img_label.pack(pady=20)
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = ImageProcessingUI(root)
-    root.mainloop()
