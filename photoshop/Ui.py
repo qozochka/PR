@@ -3,12 +3,13 @@ from tkinter import messagebox
 import cv2
 from PIL import Image, ImageTk
 from Image import ImageProcessor
+from DrawCircleDialog import CircleDialog
 
 
 class ImageProcessingUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Image Processing Application")
+        self.root.title("MiniPhotoshop")
         self.root.geometry("1500x800")
         self.root.resizable(False, False)
 
@@ -51,6 +52,7 @@ class ImageProcessingUI:
                                           command=lambda: self.processor.show_color_channel('Синий', self))
         self.blue_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
+        # Кнопки для негатива и яркости
         self.negative_btn = tk.Button(self.button_frame, text="Показать Негатив", command=self.show_negative)
         self.negative_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
@@ -64,7 +66,11 @@ class ImageProcessingUI:
         self.brightness_btn = tk.Button(self.button_frame, text="Повысить яркость", command=self.increase_brightness)
         self.brightness_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
-        # Фрейм для отображения контента (изображений)
+        # Кнопка для рисования круга
+        self.draw_circle_btn = tk.Button(self.button_frame, text="Нарисовать круг", command=self.open_circle_dialog)
+        self.draw_circle_btn.pack(side=tk.LEFT, padx=10, pady=10)
+
+        # Фрейм для отображения контента изображений
         self.content_frame = tk.Frame(self.root)
         self.content_frame.pack(expand=True, fill=tk.BOTH)
 
@@ -138,3 +144,10 @@ class ImageProcessingUI:
     def increase_brightness(self):
         value = self.brightness_scale.get()
         self.processor.increase_brightness(value, self)
+
+    def open_circle_dialog(self):
+        self.root.attributes("-disabled", True)
+        dialog = CircleDialog(self.root, title="Введите параметры круга")
+        if dialog.x is not None and dialog.y is not None and dialog.radius is not None:
+            self.processor.draw_circle(dialog.x, dialog.y, dialog.radius, self)
+        self.root.attributes("-disabled", False)

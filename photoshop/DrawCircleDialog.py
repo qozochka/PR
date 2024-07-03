@@ -1,43 +1,41 @@
 import tkinter as tk
-from tkinter import messagebox
-from PIL import ImageDraw, Image, ImageTk
+from tkinter import simpledialog, messagebox
 
 
-class DrawCircleDialog:
-    def __init__(self, root, processor):
-        self.root = root
-        self.top = tk.Toplevel(root)
-        self.top.title("Введите параметры круга")
-        self.top.geometry("150x250")
+class CircleDialog(simpledialog.Dialog):
+    def __init__(self, parent, title=None):
+        self.x = None
+        self.y = None
+        self.radius = None
+        self.x_entry = None
+        self.y_entry = None
+        self.radius_entry = None
+        super().__init__(parent, title=title)
 
-        self.processor = processor
+    def body(self, master):
+        tk.Label(master, text="Координата X:").grid(row=0)
+        tk.Label(master, text="Координата Y:").grid(row=1)
+        tk.Label(master, text="Радиус:").grid(row=2)
 
-        self.x_label = tk.Label(self.top, text="X:")
-        self.x_label.pack(pady=5)
-        self.x_entry = tk.Entry(self.top, width=10)
-        self.x_entry.pack(pady=5)
+        self.x_entry = tk.Entry(master)
+        self.y_entry = tk.Entry(master)
+        self.radius_entry = tk.Entry(master)
 
-        self.y_label = tk.Label(self.top, text="Y:")
-        self.y_label.pack(pady=5)
-        self.y_entry = tk.Entry(self.top, width=10)
-        self.y_entry.pack(pady=5)
+        self.x_entry.grid(row=0, column=1)
+        self.y_entry.grid(row=1, column=1)
+        self.radius_entry.grid(row=2, column=1)
 
-        self.radius_label = tk.Label(self.top, text="Радиус:")
-        self.radius_label.pack(pady=5)
-        self.radius_entry = tk.Entry(self.top, width=10)
-        self.radius_entry.pack(pady=5)
+        return self.x_entry
 
-        self.draw_btn = tk.Button(self.top, text="Нарисовать", command=self.draw_circle)
-        self.draw_btn.pack(pady=10)
-
-    def draw_circle(self):
+    def apply(self):
         try:
-            x = int(self.x_entry.get())
-            y = int(self.y_entry.get())
-            radius = int(self.radius_entry.get())
-            self.processor.draw_circle(x, y, radius)
-            self.top.destroy()  # Закрываем диалоговое окно после отрисовки круга
-        except ValueError:
-            messagebox.showerror("Error", "Введите корректные значения для X, Y и радиуса.")
-
-
+            self.x = int(self.x_entry.get())
+            self.y = int(self.y_entry.get())
+            self.radius = int(self.radius_entry.get())
+            if self.x < 0 or self.y < 0 or self.radius <= 0:
+                raise ValueError("Координаты и радиус должны быть положительными числами.")
+        except ValueError as e:
+            messagebox.showerror("Ошибка", f"Пожалуйста, введите корректные значения: {e}")
+            self.x = None
+            self.y = None
+            self.radius = None
