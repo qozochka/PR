@@ -136,6 +136,8 @@ class ImageProcessingUI:
                     self.snapshot_label.destroy()
 
                 self.processor.original_img = Image.open(file_path)
+                self.processor.current_img = Image.open(file_path)
+
                 self.processor.show_image(self)
 
             except Exception as e:
