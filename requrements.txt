@@ -1,0 +1,55 @@
+# packages in environment at C:\Users\kozochka\.conda\envs\PR_env:
+#
+# Name                    Version                   Build  Channel
+blas                      1.0                         mkl  
+ca-certificates           2024.3.11            haa95532_0  
+certifi                   2021.5.30        py36haa95532_0  
+freeglut                  3.4.0                hd77b12b_0  
+freetype                  2.10.4               hd328e21_0  
+icu                       69.1                 h0e60522_0    conda-forge
+intel-openmp              2023.1.0         h59b6b97_46320  
+jasper                    2.0.14               hea7d32e_2  
+jpeg                      9e                   h2bbff1b_1  
+lerc                      3.0                  hd77b12b_0  
+libblas                   3.8.0                    20_mkl    conda-forge
+libcblas                  3.8.0                    20_mkl    conda-forge
+libclang                  13.0.1          default_h81446c8_0    conda-forge
+libdeflate                1.17                 h2bbff1b_1  
+liblapack                 3.8.0                    20_mkl    conda-forge
+liblapacke                3.8.0                    20_mkl    conda-forge
+libopencv                 4.5.3            py36h530cdb0_2    conda-forge
+libpng                    1.6.37               h2a8f88b_0  
+libprotobuf               3.16.0               h7755175_0    conda-forge
+libtiff                   4.4.0                h8a3f274_2  
+libwebp                   1.3.2                hcfcfb64_1    conda-forge
+libwebp-base              1.3.2                h2bbff1b_0  
+libzlib                   1.2.12               h8ffe710_2    conda-forge
+lz4-c                     1.9.4                h2bbff1b_1  
+mkl                       2020.2                      256  
+mkl-service               2.3.0            py36h196d8e1_0  
+mkl_fft                   1.3.0            py36h46781fe_0  
+mkl_random                1.1.1            py36h47e9c7a_0  
+numpy                     1.19.2           py36hadc3359_0  
+numpy-base                1.19.2           py36ha3acd2a_0  
+olefile                   0.46               pyhd3eb1b0_0  
+opencv                    4.5.3            py36ha15d459_2    conda-forge
+openssl                   1.1.1w               h2bbff1b_0  
+pillow                    8.3.1            py36h8f6046a_0    anaconda
+pip                       21.2.2           py36haa95532_0  
+py-opencv                 4.5.3            py36h5098b23_2    conda-forge
+python                    3.6.13               h3758d61_0  
+python_abi                3.6                     2_cp36m    conda-forge
+qt                        5.12.9               h556501e_6    conda-forge
+setuptools                58.0.4           py36haa95532_0  
+six                       1.16.0             pyhd3eb1b0_1  
+sqlite                    3.45.3               h2bbff1b_0  
+tk                        8.6.12               h2bbff1b_0  
+ucrt                      10.0.20348.0         haa95532_0  
+vc                        14.2                 h2eaa2aa_4  
+vc14_runtime              14.40.33810         ha82c5b3_20    conda-forge
+vs2015_runtime            14.40.33810         h3bf8584_20    conda-forge
+wheel                     0.37.1             pyhd3eb1b0_0  
+wincertstore              0.2              py36h7fe50ca_0  
+xz                        5.4.6                h8cc25b3_1  
+zlib                      1.2.12               h8cc25b3_2  
+zstd                      1.5.2                h19a0ad4_0  
