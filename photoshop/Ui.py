@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import cv2
 from PIL import Image, ImageTk
-from Image import ImageProcessor
-from DrawCircleDialog import CircleDialog
+from photoshop.Image import ImageProcessor
+from photoshop.DrawCircleDialog import CircleDialog
 
 
 class ImageProcessingUI:
