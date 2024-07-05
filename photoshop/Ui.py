@@ -16,10 +16,10 @@ class ImageProcessingUI:
         self.processor = ImageProcessor()
 
         self.camera = None
-        self.frame = None
+        self.frame = None  # Хранит текущий кадр камеры
         self.img_tk = None
 
-        # Фрейм для кнопок и контента
+        # Фрейм для кнопок
         self.button_frame = tk.Frame(self.root)
         self.button_frame.pack(side=tk.TOP, fill=tk.X)
 
@@ -70,15 +70,18 @@ class ImageProcessingUI:
         self.draw_circle_btn = tk.Button(self.button_frame, text="Нарисовать круг", command=self.open_circle_dialog)
         self.draw_circle_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
-        # Фрейм для отображения контента изображений
+        # Фрейм для отображения
         self.content_frame = tk.Frame(self.root)
         self.content_frame.pack(expand=True, fill=tk.BOTH)
 
-        # Label для отображения снимка с камеры
+        # Label для отображения камеры
         self.snapshot_label = tk.Label(self.content_frame)
         self.snapshot_label.pack(pady=20)
 
     def open_camera(self):
+        """
+        Получает доступ к камере
+        """
         self.close_camera()
 
         if self.snapshot_label:
@@ -89,7 +92,7 @@ class ImageProcessingUI:
             self.processor.img_label.destroy()
             self.processor.img_label = None
 
-        self.camera = cv2.VideoCapture(0)  # Открываем камеру с индексом 0 (обычно встроенная)
+        self.camera = cv2.VideoCapture(0)
 
         if not self.camera.isOpened():
             messagebox.showerror("Error", "Не удалось открыть камеру.")
@@ -98,6 +101,9 @@ class ImageProcessingUI:
         self.show_camera_feed()
 
     def show_camera_feed(self):
+        """
+        Отображает камеру
+        """
         if self.camera:
             _, frame = self.camera.read()
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -111,7 +117,6 @@ class ImageProcessingUI:
             self.snapshot_label.configure(image=self.img_tk)
             self.snapshot_label.image = self.img_tk
 
-            # Вызываем update_snapshot_label() снова через 10 миллисекунд
             self.root.after(10, self.show_camera_feed)
 
     def close_camera(self):
@@ -124,7 +129,7 @@ class ImageProcessingUI:
             file_path = "snapshot.png"
             try:
                 self.frame.save(file_path)
-                self.close_camera()  # Закрываем камеру после сохранения снимка
+                self.close_camera()
                 messagebox.showinfo("Info", f"Снимок сохранен как {file_path}")
 
                 if self.snapshot_label:

@@ -11,6 +11,10 @@ class ImageProcessor:
         self.img_tk = None
 
     def open_image(self, root):
+        """
+        Открывает изображения
+        :param root: приложение
+        """
         file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png")])
         if file_path:
             try:
@@ -21,6 +25,10 @@ class ImageProcessor:
                 messagebox.showerror("Error", f"Failed to open image: {e}")
 
     def show_image(self, root):
+        """
+        Отображает изображение при открытии
+        :param root: приложение
+        """
         if self.img_label:
             self.img_label.destroy()
 
@@ -34,6 +42,11 @@ class ImageProcessor:
             self.img_label.pack(pady=20)
 
     def show_color_channel(self, channel, root):
+        """
+        Отображает цветовой канал оригинального изображения
+        :param channel: цветовой канал
+        :param root: приложение
+        """
         if not self.original_img:
             messagebox.showwarning("Warning", "Откройте изображение перед просмотром цветового канала.")
             return
@@ -52,6 +65,8 @@ class ImageProcessor:
             img = g
         elif channel == 'Синий':
             img = b
+        else:
+            img = r
 
         if self.img_label:
             self.img_label.destroy()
@@ -65,6 +80,11 @@ class ImageProcessor:
         self.img_label.pack(pady=20)
 
     def show_negative(self, root):
+        """
+        Отображает негатив текущего изображения
+        :param root:
+        :return:
+        """
         if not self.original_img:
             messagebox.showwarning("Warning", "Откройте изображение перед просмотром негативного изображения.")
             return
@@ -83,6 +103,11 @@ class ImageProcessor:
         self.img_label.pack(pady=20)
 
     def increase_brightness(self, value, root):
+        """
+        Повышает яркость на выбранный пользователем уровень
+        :param value: значение выбранное пользователем на которое произойдет изменение яркости
+        :param root: приложение
+        """
         if not self.original_img:
             messagebox.showwarning("Warning", "Откройте изображение перед увеличением яркости.")
             return
@@ -105,6 +130,13 @@ class ImageProcessor:
             messagebox.showerror("Error", f"Не удалось увеличить яркость: {e}")
 
     def draw_circle(self, x, y, radius, root):
+        """
+        Рисует красный круг поверх текущего изображения
+        :param x: горизонтальная координата
+        :param y: вертикальная координата
+        :param radius: радиус
+        :param root: приложение
+        """
         if not self.original_img:
             messagebox.showwarning("Warning", "Откройте изображение перед рисованием круга.")
             return
@@ -117,7 +149,7 @@ class ImageProcessor:
                 raise ValueError("Круг выходит за пределы изображения.")
 
             draw.ellipse((x - radius, y - radius, x + radius, y + radius), outline="red", fill="red", width=3)
-            self.original_img = img  # обновляем оригинальное изображение
+            self.original_img = img
             self.current_img = img
             self.show_image(root)
         except ValueError as e:
