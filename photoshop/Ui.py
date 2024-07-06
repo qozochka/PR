@@ -28,7 +28,7 @@ class ImageProcessingUI:
 
         # Кнопка для открытия изображения
         self.open_img_btn = tk.Button(self.button_frame, text="Открыть фото",
-                                      command=lambda: self.processor.open_image(self))
+                                      command=lambda: self.open_image(self))
         self.open_img_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Кнопка для открытия камеры
@@ -41,15 +41,15 @@ class ImageProcessingUI:
 
         # Кнопки для отображения цветовых каналов
         self.red_channel_btn = tk.Button(self.button_frame, text="Показать Красный канал",
-                                         command=lambda: self.processor.show_color_channel('Красный', self))
+                                         command=lambda: self.show_color_channel('Красный', self))
         self.red_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         self.green_channel_btn = tk.Button(self.button_frame, text="Показать Зелёный канал",
-                                           command=lambda: self.processor.show_color_channel('Зелёный', self))
+                                           command=lambda: self.show_color_channel('Зелёный', self))
         self.green_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         self.blue_channel_btn = tk.Button(self.button_frame, text="Показать Синий канал",
-                                          command=lambda: self.processor.show_color_channel('Синий', self))
+                                          command=lambda: self.show_color_channel('Синий', self))
         self.blue_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Кнопки для негатива и яркости
@@ -95,10 +95,22 @@ class ImageProcessingUI:
         self.camera = cv2.VideoCapture(0)
 
         if not self.camera.isOpened():
-            messagebox.showerror("Error", "Не удалось открыть камеру.")
+            messagebox.showerror("Ошибка", "Не удалось открыть камеру.")
             return
 
         self.show_camera_feed()
+
+    def show_color_channel(self, channel, root):
+        if self.camera:
+            messagebox.showerror("Ошибка", "Сначала закройте камеру")
+            return
+        self.processor.show_color_channel(channel, root)
+
+    def open_image(self, root):
+        if self.camera:
+            messagebox.showerror("Ошибка", "Сначала закройте камеру")
+            return
+        self.processor.open_image(root)
 
     def show_camera_feed(self):
         """
@@ -146,13 +158,22 @@ class ImageProcessingUI:
             messagebox.showwarning("Warning", "Сначала откройте камеру.")
 
     def show_negative(self):
+        if self.camera:
+            messagebox.showerror("Ошибка", "Сначала закройте камеру")
+            return
         self.processor.show_negative(self)
 
     def increase_brightness(self):
+        if self.camera:
+            messagebox.showerror("Ошибка", "Сначала закройте камеру")
+            return
         value = self.brightness_scale.get()
         self.processor.increase_brightness(value, self)
 
     def open_circle_dialog(self):
+        if self.camera:
+            messagebox.showerror("Ошибка", "Сначала закройте камеру")
+            return
         self.root.attributes("-disabled", True)
         dialog = CircleDialog(self.root, title="Введите параметры круга")
         if dialog.x is not None and dialog.y is not None and dialog.radius is not None:
