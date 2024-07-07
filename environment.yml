@@ -1,4 +1,4 @@
-name: D:\anaconda3\envs\pythonProject\photoshop_env
+name: photoshop_env
 channels:
   - pytorch
   - conda-forge
@@ -65,4 +65,4 @@ dependencies:
   - xz=5.4.6=h8cc25b3_1
   - zlib=1.2.13=h2466b09_6
   - zstd=1.5.5=hd43e919_2
-prefix: D:\anaconda3\envs\pythonProject\photoshop_env
+prefix: photoshop_env
