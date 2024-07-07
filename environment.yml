@@ -1,4 +1,4 @@
-name: D:\anaconda3\envs\pythonProject\photoshop_env
+name: ph_env
 channels:
   - pytorch
   - conda-forge
@@ -46,15 +46,11 @@ dependencies:
   - py-opencv=4.5.3=py36h5098b23_2
   - python=3.6.13=h3758d61_0
   - python_abi=3.6=2_cp36m
-  - pytorch=1.10.2=py3.6_cuda11.3_cudnn8_0
-  - pytorch-mutex=1.0=cuda
   - qt=5.12.9=h5909a2a_4
   - setuptools=58.0.4=py36haa95532_0
   - six=1.16.0=pyhd3eb1b0_1
   - sqlite=3.45.3=h2bbff1b_0
   - tk=8.6.14=h0416ee5_0
-  - torchaudio=0.10.2=py36_cu113
-  - torchvision=0.11.3=py36_cu113
   - typing_extensions=4.1.1=pyh06a4308_0
   - ucrt=10.0.22621.0=h57928b3_0
   - vc=14.2=h2eaa2aa_4
@@ -65,4 +61,4 @@ dependencies:
   - xz=5.4.6=h8cc25b3_1
   - zlib=1.2.13=h2466b09_6
   - zstd=1.5.5=hd43e919_2
-prefix: D:\anaconda3\envs\pythonProject\photoshop_env
+prefix: ph_env
