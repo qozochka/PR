@@ -10,7 +10,7 @@ class ImageProcessingUI:
     def __init__(self, root):
         self.root = root
         self.root.title("MiniPhotoshop")
-        self.root.geometry("1500x800")
+        self.root.geometry("850x650")
         self.root.resizable(False, False)
 
         self.processor = ImageProcessor()
@@ -22,6 +22,9 @@ class ImageProcessingUI:
         # Фрейм для кнопок
         self.button_frame = tk.Frame(self.root)
         self.button_frame.pack(side=tk.TOP, fill=tk.X)
+
+        self.button_frame_2 = tk.Frame(self.root)
+        self.button_frame_2.pack(side=tk.BOTTOM, fill=tk.X)
 
         # Разделитель между верхней полосой с кнопками и основной частью приложения
         tk.Frame(self.root, height=2, bd=1, relief=tk.SUNKEN).pack(fill=tk.X, padx=5, pady=5)
@@ -53,26 +56,29 @@ class ImageProcessingUI:
         self.blue_channel_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Кнопки для негатива и яркости
-        self.negative_btn = tk.Button(self.button_frame, text="Показать Негатив", command=self.show_negative)
+        self.negative_btn = tk.Button(self.button_frame_2, text="Показать Негатив", command=self.show_negative)
         self.negative_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.brightness_label = tk.Label(self.button_frame, text="Яркость:")
+        self.brightness_label = tk.Label(self.button_frame_2, text="Яркость:")
         self.brightness_label.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.brightness_scale = tk.Scale(self.button_frame, from_=0.1, to=3.0, resolution=0.1, orient=tk.HORIZONTAL)
+        self.brightness_scale = tk.Scale(self.button_frame_2, from_=0.1, to=3.0, resolution=0.1, orient=tk.HORIZONTAL)
         self.brightness_scale.set(1.0)
         self.brightness_scale.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.brightness_btn = tk.Button(self.button_frame, text="Повысить яркость", command=self.increase_brightness)
+        self.brightness_btn = tk.Button(self.button_frame_2, text="Повысить яркость", command=self.increase_brightness)
         self.brightness_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Кнопка для рисования круга
-        self.draw_circle_btn = tk.Button(self.button_frame, text="Нарисовать круг", command=self.open_circle_dialog)
+        self.draw_circle_btn = tk.Button(self.button_frame_2, text="Нарисовать круг", command=self.open_circle_dialog)
         self.draw_circle_btn.pack(side=tk.LEFT, padx=10, pady=10)
 
         # Фрейм для отображения
         self.content_frame = tk.Frame(self.root)
         self.content_frame.pack(expand=True, fill=tk.BOTH)
+
+        # Разделитель между верхней полосой с кнопками и основной частью приложения
+        tk.Frame(self.root, height=2, bd=1, relief=tk.SUNKEN).pack(fill=tk.X, padx=5, pady=5)
 
         # Label для отображения камеры
         self.snapshot_label = tk.Label(self.content_frame)
