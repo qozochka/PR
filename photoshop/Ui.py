@@ -148,7 +148,7 @@ class ImageProcessingUI:
             try:
                 self.frame.save(file_path)
                 self.close_camera()
-                messagebox.showinfo("Info", f"Снимок сохранен как {file_path}")
+                messagebox.showinfo("Инфо", f"Снимок сохранен как {file_path}")
 
                 if self.snapshot_label:
                     self.snapshot_label.destroy()
@@ -159,9 +159,9 @@ class ImageProcessingUI:
                 self.processor.show_image(self)
 
             except Exception as e:
-                messagebox.showerror("Error", f"Не удалось сохранить снимок: {e}")
+                messagebox.showerror("Ошибка", f"Не удалось сохранить снимок: {e}")
         else:
-            messagebox.showwarning("Warning", "Сначала откройте камеру.")
+            messagebox.showwarning("Предупреждение", "Сначала откройте камеру.")
 
     def show_negative(self):
         if self.camera:

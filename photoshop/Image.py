@@ -22,7 +22,7 @@ class ImageProcessor:
                 self.current_img = self.original_img
                 self.show_image(root)
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to open image: {e}")
+                messagebox.showerror("Ошибка", f"Failed to open image: {e}")
 
     def show_image(self, root):
         """
@@ -48,7 +48,7 @@ class ImageProcessor:
         :param root: приложение
         """
         if not self.original_img:
-            messagebox.showwarning("Warning", "Откройте изображение перед просмотром цветового канала.")
+            messagebox.showwarning("Ошибка", "Откройте изображение перед просмотром цветового канала.")
             return
 
         if self.original_img.mode == 'RGB':
@@ -56,7 +56,7 @@ class ImageProcessor:
         elif self.original_img.mode == 'L':
             r = g = b = self.original_img.copy()
         else:
-            messagebox.showerror("Error", "Выбранное изображение не является трехканальным (RGB)")
+            messagebox.showerror("Ошибка", "Выбранное изображение не является трехканальным (RGB)")
             return
 
         if channel == 'Красный':
@@ -86,7 +86,7 @@ class ImageProcessor:
         :return:
         """
         if not self.original_img:
-            messagebox.showwarning("Warning", "Откройте изображение перед просмотром негативного изображения.")
+            messagebox.showwarning("Ошибка", "Откройте изображение перед просмотром негативного изображения.")
             return
 
         img = ImageOps.invert(self.current_img.convert('RGB'))
@@ -109,7 +109,7 @@ class ImageProcessor:
         :param root: приложение
         """
         if not self.original_img:
-            messagebox.showwarning("Warning", "Откройте изображение перед увеличением яркости.")
+            messagebox.showwarning("Ошибка", "Откройте изображение перед увеличением яркости.")
             return
 
         try:
@@ -127,7 +127,7 @@ class ImageProcessor:
             self.img_label.image = self.img_tk
             self.img_label.pack(pady=20)
         except Exception as e:
-            messagebox.showerror("Error", f"Не удалось увеличить яркость: {e}")
+            messagebox.showerror("Ошибка", f"Не удалось увеличить яркость: {e}")
 
     def draw_circle(self, x, y, radius, root):
         """
@@ -138,7 +138,7 @@ class ImageProcessor:
         :param root: приложение
         """
         if not self.original_img:
-            messagebox.showwarning("Warning", "Откройте изображение перед рисованием круга.")
+            messagebox.showwarning("Ошибка", "Откройте изображение перед рисованием круга.")
             return
 
         try:
@@ -155,4 +155,4 @@ class ImageProcessor:
         except ValueError as e:
             messagebox.showerror("Ошибка", f"Не удалось нарисовать круг: {e}")
         except Exception as e:
-            messagebox.showerror("Error", f"Не удалось нарисовать круг: {e}")
+            messagebox.showerror("Ошибка", f"Не удалось нарисовать круг: {e}")
